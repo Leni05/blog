@@ -9,15 +9,16 @@ import javax.persistence.*;
 public class Blog extends AuditModel{
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name= "id")
+    private Long blog_id;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Author.class,fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
     @JsonManagedReference
     private Author author;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Category.class,fetch = FetchType.LAZY)
     @JoinColumn(name = "categories_id")
     @JsonManagedReference
     private Category category;
@@ -27,14 +28,6 @@ public class Blog extends AuditModel{
     
     @Column(columnDefinition = "TEXT")
     private String content;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getTitle() {
         return title;
@@ -68,9 +61,17 @@ public class Blog extends AuditModel{
         this.author = author;
     }
 
-    @Override
-	public String toString() {
-		return "Blog [id=" + id + ", title=" + title + " , content=" + content + "]";
-	}
+    public Long getBlog_id() {
+        return blog_id;
+    }
+
+    public void setBlog_id(Long blog_id) {
+        this.blog_id = blog_id;
+    }
+
+    // @Override
+	// public String toString() {
+	// 	return "Blog [id=" + id + ", title=" + title + " , content=" + content + "]";
+	// }
 
 }

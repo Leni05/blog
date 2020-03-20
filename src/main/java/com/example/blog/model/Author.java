@@ -8,8 +8,9 @@ import javax.persistence.*;
 public class Author extends AuditModel{
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name= "id")
+    private Long author_id;
 
     @Column(length = 45, name= "first_name")
     private String firstname;
@@ -20,14 +21,7 @@ public class Author extends AuditModel{
     @Column(length = 150)
     private String password;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
+   
     public String getFirstname() {
         return firstname;
     }
@@ -60,8 +54,16 @@ public class Author extends AuditModel{
         this.password = password;
     }
 
+    public Long getAuthor_id() {
+        return author_id;
+    }
+
+    public void setAuthor_id(Long author_id) {
+        this.author_id = author_id;
+    }
+
     @Override
 	public String toString() {
-		return "Author [id=" + id + ", firstname=" + firstname + ", lastname= "+ lastname+", username = "+ username +" ]";
+		return "Author [id=" + author_id + ", firstname=" + firstname + ", lastname= "+ lastname+", username = "+ username +" ]";
 	}
 }

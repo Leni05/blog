@@ -4,23 +4,17 @@ package com.example.blog.model;
 // import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.*;
 
+
 @Entity
 public class Tags extends AuditModel{
+
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name= "id")
+    private Long tags_id;
 
     @Column(length = 20)
     private String name;
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -30,9 +24,17 @@ public class Tags extends AuditModel{
         this.name = name;
     }
 
-    @Override
-	public String toString() {
-		return "Tags [id=" + id + ", name=" + name + " ]";
-	}
+    public Long getTags_id() {
+        return tags_id;
+    }
+
+    public void setTags_id(Long tags_id) {
+        this.tags_id = tags_id;
+    }
+
+    // @Override
+	// public String toString() {
+	// 	return "Tags [id=" + id + ", name=" + name + " ]";
+	// }
 
 }

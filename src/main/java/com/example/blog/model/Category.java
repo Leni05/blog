@@ -6,21 +6,14 @@ import javax.persistence.*;
 
 @Entity
 public class Category extends AuditModel{
+    
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long id;
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name= "id")
+    private Long category_id;
 
     @Column(length = 45)
     private String name;
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -30,9 +23,17 @@ public class Category extends AuditModel{
         this.name = name;
     }
 
-    @Override
-	public String toString() {
-		return "Category [id=" + id + ", name=" + name + " ]";
-	}
+    public Long getCategory_id() {
+        return category_id;
+    }
+
+    public void setCategory_id(Long category_id) {
+        this.category_id = category_id;
+    }
+
+    // @Override
+	// public String toString() {
+	// 	return "Category [id=" + id + ", name=" + name + " ]";
+	// }
 
 }

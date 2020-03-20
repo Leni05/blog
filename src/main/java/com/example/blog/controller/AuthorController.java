@@ -3,41 +3,36 @@ package com.example.blog.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.blog.model.ResponseBaseDTO;
-
-import com.example.blog.model.Tags;
-import com.example.blog.repository.TagsRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import com.example.blog.model.Author;
+import com.example.blog.repository.AuthorRepository;
 
 @RestController
-@RequestMapping("/tags")
-public class TagsController {
+@RequestMapping("/authors")
+public class AuthorController {
 
-	@Autowired
-	TagsRepository tagsRepository;
-   
-    
+    @Autowired
+    AuthorRepository authorRepository;
+
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @RequestMapping(value="/list", method = RequestMethod.GET)
     public ResponseEntity<ResponseBaseDTO> listTags(){
         ResponseBaseDTO response = new ResponseBaseDTO();         
      
         try
         {         
-            List<Tags> tags = tagsRepository.findAll();
+            List<Author> tags = authorRepository.findAll();
             response.setStatus(true);
             response.setCode("200");
             response.setMessage("success");
@@ -56,15 +51,15 @@ public class TagsController {
         }
         
     }
-    
+
+
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ResponseEntity<ResponseBaseDTO> create(@RequestBody Tags tags){
-              
-        Tags result = new Tags();
-       
+    public ResponseEntity<ResponseBaseDTO> create(@RequestBody Author authors){
+         
+        Author resultaAuthor = new Author();       
         ResponseBaseDTO response = new ResponseBaseDTO(); 
 
-        if(tags.getName().isEmpty() )
+        if(authors.getUsername().isEmpty() || authors.getLastname().isEmpty() || authors.getFirstname().isEmpty() ) 
         {
             // System.out.println(user.getEmail());
             response.setMessage("column is null");
@@ -74,11 +69,12 @@ public class TagsController {
         
         try
         {         
-            result =  tagsRepository.save(tags);
+            authors.setPassword(bCryptPasswordEncoder.encode(authors.getPassword()));  
+            resultaAuthor =  authorRepository.save(authors);
             response.setStatus(true);
             response.setCode("200");
             response.setMessage("success");
-            response.setData(result);           
+            response.setData(resultaAuthor);           
             
             return new ResponseEntity<>(response ,HttpStatus.OK);
         }
@@ -93,21 +89,25 @@ public class TagsController {
        
     }
 
+
     @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<ResponseBaseDTO> updateUser(@PathVariable("id") long id, @RequestBody Tags tags) {
+    public ResponseEntity<ResponseBaseDTO> updateUser(@PathVariable("id") long id, @RequestBody Author authors) {
        
         ResponseBaseDTO response = new ResponseBaseDTO();
 
         try {
-            Optional<Tags> tagsData = tagsRepository.findById(id);
-            if (tagsData.isPresent()) {
-                Tags _tags = tagsData.get();
-                _tags.setName(tags.getName());
+            Optional<Author> authorData = authorRepository.findById(id);
+            if (authorData.isPresent()) {
+                Author _author = authorData.get();
+                _author.setFirstname(authors.getFirstname());
+                _author.setLastname(authors.getLastname());
+                _author.setUsername(authors.getUsername());
+                _author.setPassword(bCryptPasswordEncoder.encode(authors.getPassword()));  
              
                 response.setStatus(true);
                 response.setCode("200");
                 response.setMessage("success");  
-                response.setData(tagsRepository.save(_tags));            
+                response.setData(authorRepository.save(_author));            
                 
             }
             return new ResponseEntity<>( response, HttpStatus.OK);
@@ -122,45 +122,20 @@ public class TagsController {
        
     }
 
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
-    public  ResponseEntity<ResponseBaseDTO> delete(@PathVariable(value = "id") Long id){       
-       
-        ResponseBaseDTO response = new ResponseBaseDTO(); 
-
-        try
-        {         
-            tagsRepository.deleteById(id);
-            response.setStatus(true);
-            response.setCode("200");
-            response.setMessage("success");           
-            
-            return new ResponseEntity<>(response ,HttpStatus.OK);
-        }
-        catch(Exception e)
-        {
-         // catch error when get user
-            response.setStatus(false);
-            response.setCode("500");
-            response.setMessage( "id " + id + " not exists! " );
-            return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);
-        }
-      
-    }
-
 
     @RequestMapping(value = "/search/{id}", method = RequestMethod.GET)
-	public ResponseEntity<ResponseBaseDTO> getTagsById(@PathVariable("id") long id) {
+	public ResponseEntity<ResponseBaseDTO> getAuthorById(@PathVariable("id") long id) {
 
         ResponseBaseDTO response = new ResponseBaseDTO(); 
 
         try
         {     
-            Optional<Tags> tags = tagsRepository.findById(id); 
-            if (tags.isPresent()) {           
+            Optional<Author> authors = authorRepository.findById(id); 
+            if (authors.isPresent()) {           
                 response.setStatus(true);
                 response.setCode("200");
                 response.setMessage("success");
-                response.setData(tags);     
+                response.setData(authors);     
                 
             }
             return new ResponseEntity<>( response, HttpStatus.OK);

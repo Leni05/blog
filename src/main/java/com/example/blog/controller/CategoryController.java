@@ -1,5 +1,7 @@
 package com.example.blog.controller;
 
+import com.example.blog.model.Category;
+import com.example.blog.repository.CategoryRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,28 +22,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.blog.model.ResponseBaseDTO;
 
-import com.example.blog.model.Tags;
-import com.example.blog.repository.TagsRepository;
-
 @RestController
-@RequestMapping("/tags")
-public class TagsController {
+@RequestMapping("/categorys")
+public class CategoryController { 
 
-	@Autowired
-	TagsRepository tagsRepository;
-   
-    
+    @Autowired
+    CategoryRepository categoryRepository;
+
     @RequestMapping(value="/list", method = RequestMethod.GET)
     public ResponseEntity<ResponseBaseDTO> listTags(){
         ResponseBaseDTO response = new ResponseBaseDTO();         
      
         try
         {         
-            List<Tags> tags = tagsRepository.findAll();
+            List<Category> category = categoryRepository.findAll();
             response.setStatus(true);
             response.setCode("200");
             response.setMessage("success");
-            response.setData(tags);         
+            response.setData(category);         
             
             return new ResponseEntity<>(response ,HttpStatus.OK);
         }
@@ -56,15 +54,15 @@ public class TagsController {
         }
         
     }
-    
+
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ResponseEntity<ResponseBaseDTO> create(@RequestBody Tags tags){
+    public ResponseEntity<ResponseBaseDTO> create(@RequestBody Category categorys){
               
-        Tags result = new Tags();
+        Category resultcategory = new Category();
        
         ResponseBaseDTO response = new ResponseBaseDTO(); 
 
-        if(tags.getName().isEmpty() )
+        if(categorys.getName().isEmpty() )
         {
             // System.out.println(user.getEmail());
             response.setMessage("column is null");
@@ -74,11 +72,11 @@ public class TagsController {
         
         try
         {         
-            result =  tagsRepository.save(tags);
+            resultcategory =  categoryRepository.save(categorys);
             response.setStatus(true);
             response.setCode("200");
             response.setMessage("success");
-            response.setData(result);           
+            response.setData(resultcategory);           
             
             return new ResponseEntity<>(response ,HttpStatus.OK);
         }
@@ -93,21 +91,22 @@ public class TagsController {
        
     }
 
+
     @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<ResponseBaseDTO> updateUser(@PathVariable("id") long id, @RequestBody Tags tags) {
+    public ResponseEntity<ResponseBaseDTO> updateUser(@PathVariable("id") long id, @RequestBody Category categorys) {
        
         ResponseBaseDTO response = new ResponseBaseDTO();
 
         try {
-            Optional<Tags> tagsData = tagsRepository.findById(id);
-            if (tagsData.isPresent()) {
-                Tags _tags = tagsData.get();
-                _tags.setName(tags.getName());
+            Optional<Category> categoryData = categoryRepository.findById(id);
+            if (categoryData.isPresent()) {
+                Category _category = categoryData.get();
+                _category.setName(categorys.getName());
              
                 response.setStatus(true);
                 response.setCode("200");
                 response.setMessage("success");  
-                response.setData(tagsRepository.save(_tags));            
+                response.setData(categoryRepository.save(_category));            
                 
             }
             return new ResponseEntity<>( response, HttpStatus.OK);
@@ -121,7 +120,6 @@ public class TagsController {
         }
        
     }
-
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     public  ResponseEntity<ResponseBaseDTO> delete(@PathVariable(value = "id") Long id){       
        
@@ -129,7 +127,7 @@ public class TagsController {
 
         try
         {         
-            tagsRepository.deleteById(id);
+            categoryRepository.deleteById(id);
             response.setStatus(true);
             response.setCode("200");
             response.setMessage("success");           
@@ -146,16 +144,15 @@ public class TagsController {
         }
       
     }
-
-
+        
     @RequestMapping(value = "/search/{id}", method = RequestMethod.GET)
-	public ResponseEntity<ResponseBaseDTO> getTagsById(@PathVariable("id") long id) {
+	public ResponseEntity<ResponseBaseDTO> getTutorialById(@PathVariable("id") long id) {
 
         ResponseBaseDTO response = new ResponseBaseDTO(); 
 
         try
         {     
-            Optional<Tags> tags = tagsRepository.findById(id); 
+            Optional<Category> tags = categoryRepository.findById(id); 
             if (tags.isPresent()) {           
                 response.setStatus(true);
                 response.setCode("200");
