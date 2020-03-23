@@ -1,9 +1,9 @@
 package com.example.blog.repository;
 
+import java.util.List;
 import com.example.blog.model.BlogTags;
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.example.blog.model.Author;
 
-public interface BlogTagsRepository extends JpaRepository<Author, Long> {
-
+public interface BlogtagsRepository extends JpaRepository<BlogTags, Long> {
+ 
 }

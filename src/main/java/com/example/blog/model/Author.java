@@ -2,7 +2,10 @@ package com.example.blog.model;
 
 // import com.fasterxml.jackson.annotation.JsonIgnore;
 // import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Set;
 import javax.persistence.*;
+import com.example.blog.model.Blog;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Author extends AuditModel{
@@ -20,7 +23,10 @@ public class Author extends AuditModel{
     private String username;
     @Column(length = 150)
     private String password;
-
+    
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author")
+    @JsonManagedReference(value = "blog-author")
+    private Set<Blog> blog;
    
     public String getFirstname() {
         return firstname;

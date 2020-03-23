@@ -4,6 +4,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -20,9 +22,16 @@ public class BlogTags implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name= "id")
-    private Long blog_tags_id;
+    private Long id;
 
+    @ManyToOne(targetEntity = Author.class,fetch = FetchType.LAZY)
+    @JoinColumn(name = "tags_id")
+    @JsonManagedReference
     private Tags tags;
+
+    @ManyToOne(targetEntity = Author.class,fetch = FetchType.LAZY)
+    @JoinColumn(name = "blog_id")
+    @JsonManagedReference
     private Blog blog;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -31,9 +40,6 @@ public class BlogTags implements Serializable{
     private Date createdAt;
 
 
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "blog_id")
     public Blog getBlog() {
         return blog;
     }
@@ -41,7 +47,6 @@ public class BlogTags implements Serializable{
     public void setBlog(Blog blog) {
         this.blog = blog;
     }
-
 
     @PrePersist
     public void onPrePersist() {
@@ -57,9 +62,14 @@ public class BlogTags implements Serializable{
         this.createdAt = createdAt;
     }
 
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "tags_id")
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Tags getTags() {
         return tags;
     }
@@ -68,11 +78,5 @@ public class BlogTags implements Serializable{
         this.tags = tags;
     }
 
-    public Long getBlog_tags_id() {
-        return blog_tags_id;
-    }
-
-    public void setBlog_tags_id(Long blog_tags_id) {
-        this.blog_tags_id = blog_tags_id;
-    }
+   
 }

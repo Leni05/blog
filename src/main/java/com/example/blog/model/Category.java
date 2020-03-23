@@ -1,8 +1,11 @@
 package com.example.blog.model;
 
+import java.util.Set;
 // import com.fasterxml.jackson.annotation.JsonIgnore;
 // import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.*;
+import com.example.blog.model.Blog;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Category extends AuditModel{
@@ -14,6 +17,10 @@ public class Category extends AuditModel{
 
     @Column(length = 45)
     private String name;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "category")
+    @JsonManagedReference(value = "blog-category")
+    private Set<Blog> blog;
 
     public String getName() {
         return name;

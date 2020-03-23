@@ -107,20 +107,20 @@ public class BlogController {
         // }
         try
         {     
-            Blog resultBlog = new Blog();          
-            Blog blogs = new Blog();         
-            Author authors = authorRepository.findById(authorId).orElseThrow(() -> new RelationNotFoundException("AuthorId " + authorId + " not found"));
-            Category category = categoryRepository.findById(authorId).orElseThrow(() -> new RelationNotFoundException("CategoryId " + categoryId + " not found"));
+            System.out.println(authorId);
+            // Blog blogs = new Blog();         
+            // Author authors = authorRepository.findById(authorId).orElseThrow(() -> new RelationNotFoundException("AuthorId " + authorId + " not found"));
+            // Category category = categoryRepository.findById(authorId).orElseThrow(() -> new RelationNotFoundException("CategoryId " + categoryId + " not found"));
             
-            authors.getAuthor_id();
-            category.getCategory_id();
-            blogs.setTitle(title);
-            blogs.setContent(content);
-            resultBlog = blogRepository.save(blogs);
-            response.setStatus(true);
-            response.setCode("200");
-            response.setMessage("success");
-            response.setData(resultBlog);           
+            // blogs.setAuthor(authors);
+            // blogs.setCategory(category);
+            // blogs.setTitle(title);
+            // blogs.setContent(content);
+            // blogRepository.save(blogs);
+            // response.setStatus(true);
+            // response.setCode("200");
+            // response.setMessage("success");
+            // response.setData(blogs);
             
             return new ResponseEntity<>(response ,HttpStatus.OK);
         }
@@ -136,9 +136,7 @@ public class BlogController {
     }
 
     @RequestMapping(value = "/saveblogs" , method = RequestMethod.POST)
-    public ResponseEntity<ResponseBaseDTO> createBlogs(
-                                      
-                                        @RequestBody Blog blogs) {
+    public ResponseEntity<ResponseBaseDTO> createBlogs(@RequestBody Blog blogs) {
      
         ResponseBaseDTO response = new ResponseBaseDTO(); 
 
