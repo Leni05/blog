@@ -110,4 +110,68 @@ public class BlogController {
        
        
     }
+
+    @RequestMapping(value = "/updateBlog/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<ResponseBaseDTO> updateUser(@PathVariable("id") long id, @RequestBody Blog blog) {
+       
+        ResponseBaseDTO response = new ResponseBaseDTO();
+
+        try {
+            Optional<Blog> blogData = blogRepository.findById(id);
+            if (blogData.isPresent()) {
+                Blog _blog = blogData.get();
+                _blog.setAuthor(blog.getAuthor());
+                _blog.setCategory(blog.getCategory());
+                _blog.setContent(blog.getContent());
+                _blog.setTitle(blog.getTitle());
+                
+             
+                response.setStatus(true);
+                response.setCode("200");
+                response.setMessage("success");  
+                response.setData(blogRepository.save(_blog));            
+                
+            }
+            return new ResponseEntity<>( response, HttpStatus.OK);
+          
+        } catch (Exception e) {
+            // catch error when get user
+            response.setStatus(false);
+            response.setCode("500");
+            response.setMessage( "id " + id + " not exists! " );
+            return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);
+        }
+       
+    }
+
+
+        
+    @RequestMapping(value = "/search/{id}", method = RequestMethod.GET)
+	public ResponseEntity<ResponseBaseDTO> getBlogById(@PathVariable("id") long id) {
+
+        ResponseBaseDTO response = new ResponseBaseDTO(); 
+
+        try
+        {     
+            Optional<Blog> blogs = blogRepository.findById(id); 
+            if (blogs.isPresent()) {           
+                response.setStatus(true);
+                response.setCode("200");
+                response.setMessage("success");
+                response.setData(blogs);     
+                
+            }
+            return new ResponseEntity<>( response, HttpStatus.OK);
+        }
+        catch(Exception e)
+        {
+            // catch error when get user
+            response.setStatus(false);
+            response.setCode("500");
+            response.setMessage(e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
+
 }
