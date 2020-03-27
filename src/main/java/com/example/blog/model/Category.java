@@ -11,16 +11,15 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 public class Category extends AuditModel{
     
     @Id
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name= "id")
-    private Long category_id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(length = 45)
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "category")
-    @JsonManagedReference(value = "blog-category")
-    private Set<Blog> blog;
+    // @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "category")
+    // @JsonManagedReference(value = "blog-category")
+    // private Set<Blog> blog;
 
     public String getName() {
         return name;
@@ -30,12 +29,12 @@ public class Category extends AuditModel{
         this.name = name;
     }
 
-    public Long getCategory_id() {
-        return category_id;
+    public Long getId() {
+        return id;
     }
 
-    public void setCategory_id(Long category_id) {
-        this.category_id = category_id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     // @Override

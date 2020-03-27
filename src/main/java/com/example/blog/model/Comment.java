@@ -1,7 +1,15 @@
 package com.example.blog.model;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 public class Comment extends AuditModel{
@@ -9,7 +17,7 @@ public class Comment extends AuditModel{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name= "id")
-    private Long comment_id;
+    private Long id;
 
     @Column(length = 80, name="guest_email")
     private String guestemail;
@@ -17,9 +25,12 @@ public class Comment extends AuditModel{
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    @ManyToOne
-    @JoinColumn(name = "blog_id")
-    @JsonManagedReference
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "blog_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    @JsonProperty("blog_id")
     private Blog blog;
 
     public String getGuestemail() {
@@ -46,12 +57,12 @@ public class Comment extends AuditModel{
         this.blog = blog;
     }
 
-    public Long getComment_id() {
-        return comment_id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setComment_id(Long comment_id) {
-        this.comment_id = comment_id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 }

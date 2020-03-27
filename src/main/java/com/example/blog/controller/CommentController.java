@@ -55,6 +55,16 @@ public class CommentController {
         
     }
     
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    public ResponseEntity<Comment> create(@RequestBody Comment comments){
+              
+        Comment result = new Comment();    
+
+        result =  commentRepository.save(comments);        
+
+        return new ResponseEntity<>(result ,HttpStatus.OK);
+       
+    }
 
    
 }

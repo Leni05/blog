@@ -36,18 +36,12 @@ import com.example.blog.model.Tags;
 @RestController
 @RequestMapping("/blogs")
 public class BlogController {
-
     @Autowired
-    BlogRepository blogRepository;
-
-    @Autowired
-    CategoryRepository categoryRepository;
-
-    @Autowired
-    AuthorRepository authorRepository;
-
+	BlogRepository blogRepository;
+   
+    
     @RequestMapping(value="/list", method = RequestMethod.GET)
-    public ResponseEntity<ResponseBaseDTO> listTags(){
+    public ResponseEntity<ResponseBaseDTO> listBlog(){
         ResponseBaseDTO response = new ResponseBaseDTO();         
      
         try
@@ -71,94 +65,37 @@ public class BlogController {
         }        
     }
 
-    //=============================================== Create Blog ====================================================
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ResponseEntity<ResponseBaseDTO> create(
-                                        @RequestBody Long authorId, 
-                                        @RequestBody Long categoryId, 
-                                        // @RequestBody Blog blogs,
-                                        @RequestBody String title,
-                                        @RequestBody String content
-                                        ) throws RelationNotFoundException {
-     
-        ResponseBaseDTO response = new ResponseBaseDTO(); 
-        // if(blogs.getTitle(title).isEmpty() || blogs.getContent().isEmpty())
-        // {
-        //     // System.out.println(user.getEmail());
-        //     response.setMessage("column is null");
-        //     return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);
-        // }      
-        
-        // try
-        // {     
-        //     // Blog resultBlog = new Blog();          
-        //     Author authors = authorRepository.findById(authorId).orElseThrow(() -> new RelationNotFoundException("AuthorId " + authorId + " not found"));
-        //     Category category = categoryRepository.findById(authorId).orElseThrow(() -> new RelationNotFoundException("CategoryId " + categoryId + " not found"));
-        //     authors.getAuthor_id();
-        //     category.getCategory_id();
-        //     blogs.setTitle(title);
-        //     blogs.setContent(content);
-        //     response.setStatus(true);
-        //     response.setCode("200");
-        //     response.setMessage("success");
-        //     response.setData(resultBlog);           
-            
-        //     return new ResponseEntity<>(response ,HttpStatus.OK);
-        // }
-        try
-        {     
-            System.out.println(authorId);
-            // Blog blogs = new Blog();         
-            // Author authors = authorRepository.findById(authorId).orElseThrow(() -> new RelationNotFoundException("AuthorId " + authorId + " not found"));
-            // Category category = categoryRepository.findById(authorId).orElseThrow(() -> new RelationNotFoundException("CategoryId " + categoryId + " not found"));
-            
-            // blogs.setAuthor(authors);
-            // blogs.setCategory(category);
-            // blogs.setTitle(title);
-            // blogs.setContent(content);
-            // blogRepository.save(blogs);
-            // response.setStatus(true);
-            // response.setCode("200");
-            // response.setMessage("success");
-            // response.setData(blogs);
-            
-            return new ResponseEntity<>(response ,HttpStatus.OK);
-        }
-        catch(Exception e)
-        {
-         // catch error when get user
-            response.setStatus(false);
-            response.setCode("500");
-            response.setMessage(e.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);
-        }
+    public ResponseEntity<Blog> create(@RequestBody Blog blog){
+              
+        Blog result = new Blog();    
+
+        result =  blogRepository.save(blog);        
+        return new ResponseEntity<>(result ,HttpStatus.OK);
        
     }
 
-    @RequestMapping(value = "/saveblogs" , method = RequestMethod.POST)
-    public ResponseEntity<ResponseBaseDTO> createBlogs(@RequestBody Blog blogs) {
-     
+    @RequestMapping(value = "/saveresponse", method = RequestMethod.POST)
+    public ResponseEntity<ResponseBaseDTO> createBlog(@RequestBody Blog blog){
+              
+        Blog result = new Blog();    
         ResponseBaseDTO response = new ResponseBaseDTO(); 
 
-        if(blogs.getTitle().isEmpty() || blogs.getContent().isEmpty())
+        if(blog.getContent().isEmpty() || blog.getTitle().isEmpty() )
         {
             // System.out.println(user.getEmail());
             response.setMessage("column is null");
             return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);
-        }      
+      
+        }
         
         try
-        {     
-            Blog resultBlog = new Blog();          
-            // Author authors = authorRepository.findById(authorId).orElseThrow(() -> new RelationNotFoundException("AuthorId " + authorId + " not found"));
-            // Category category = categoryRepository.findById(authorId).orElseThrow(() -> new RelationNotFoundException("CategoryId " + categoryId + " not found"));
-            // authors.getAuthor_id();
-            // category.getCategory_id();
-            resultBlog = blogRepository.save(blogs);
+        {         
+            result =  blogRepository.save(blog);
             response.setStatus(true);
             response.setCode("200");
             response.setMessage("success");
-            response.setData(resultBlog);           
+            response.setData(result);           
             
             return new ResponseEntity<>(response ,HttpStatus.OK);
         }
@@ -171,8 +108,6 @@ public class BlogController {
             return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);
         }
        
+       
     }
-
-
-
 }

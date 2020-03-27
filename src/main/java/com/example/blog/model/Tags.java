@@ -10,8 +10,7 @@ public class Tags extends AuditModel{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name= "id")
-    private Long tags_id;
+    private Long id;
 
     @Column(length = 20)
     private String name;
@@ -24,13 +23,14 @@ public class Tags extends AuditModel{
         this.name = name;
     }
 
-    public Long getTags_id() {
-        return tags_id;
+    public Long getId() {
+        return id;
     }
 
-    public void setTags_id(Long tags_id) {
-        this.tags_id = tags_id;
+    public void setId(Long id) {
+        this.id = id;
     }
+
 
     // @Override
 	// public String toString() {

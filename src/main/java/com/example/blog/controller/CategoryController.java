@@ -55,14 +55,15 @@ public class CategoryController {
         
     }
 
+   
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ResponseEntity<ResponseBaseDTO> create(@RequestBody Category categorys){
+    public ResponseEntity<ResponseBaseDTO> create(@RequestBody Category category){
               
-        Category resultcategory = new Category();
+        Category result = new Category();
        
         ResponseBaseDTO response = new ResponseBaseDTO(); 
 
-        if(categorys.getName().isEmpty() )
+        if(category.getName().isEmpty() )
         {
             // System.out.println(user.getEmail());
             response.setMessage("column is null");
@@ -72,11 +73,11 @@ public class CategoryController {
         
         try
         {         
-            resultcategory =  categoryRepository.save(categorys);
+            result =  categoryRepository.save(category);
             response.setStatus(true);
             response.setCode("200");
             response.setMessage("success");
-            response.setData(resultcategory);           
+            response.setData(result);           
             
             return new ResponseEntity<>(response ,HttpStatus.OK);
         }
@@ -90,6 +91,7 @@ public class CategoryController {
         }
        
     }
+
 
 
     @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
